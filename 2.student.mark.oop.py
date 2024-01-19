@@ -1,169 +1,136 @@
-{
- "cells": [
-  {
-   "cell_type": "code",
-   "execution_count": null,
-   "id": "c50178fb-eb97-43ed-bc06-6dbeec1b3e67",
-   "metadata": {},
-   "outputs": [],
-   "source": [
-    "class Student:\n",
-    "    def __init__(self, student_id, name, dob):\n",
-    "        self.id = student_id\n",
-    "        self.name = name\n",
-    "        self.dob = dob\n",
-    "        self.courses = []\n",
-    "\n",
-    "    def input_marks(self, course_id, marks):\n",
-    "        course = next((c for c in courses if c.id == course_id), None)\n",
-    "        if course:\n",
-    "            self.courses.append({\"course\": course, \"marks\": marks})\n",
-    "        else:\n",
-    "            print(f\"Course with ID {course_id} not found.\")\n",
-    "\n",
-    "    def display_info(self):\n",
-    "        print(f\"Student ID: {self.id} - Name: {self.name}\")\n",
-    "\n",
-    "class Course:\n",
-    "    def __init__(self, course_id, name):\n",
-    "        self.id = course_id\n",
-    "        self.name = name\n",
-    "\n",
-    "students = []\n",
-    "courses = []\n",
-    "\n",
-    "def number_of_students():\n",
-    "    return int(input(\"Enter the number of student(s): \"))\n",
-    "\n",
-    "def number_of_courses():\n",
-    "    return int(input(\"Enter the number of course(s): \"))\n",
-    "\n",
-    "def check_student_number(students):\n",
-    "    if len(students) == 0:\n",
-    "        print(\"There is no student yet!\")\n",
-    "        return False\n",
-    "    else:\n",
-    "        return True\n",
-    "\n",
-    "def check_course_number(courses):\n",
-    "    if len(courses) == 0:\n",
-    "        print(\"There is no course yet!\")\n",
-    "        return False\n",
-    "    else:\n",
-    "        return True\n",
-    "\n",
-    "def select_course(courses):\n",
-    "    print(\"Select a course \")\n",
-    "    list_courses(courses)\n",
-    "    course_id = input(\"Enter course ID: \")\n",
-    "    \n",
-    "    for course in courses:\n",
-    "        if course.id == course_id:\n",
-    "            return course\n",
-    "        \n",
-    "def list_students(students):\n",
-    "    print(\"List of students: \")\n",
-    "    for student in students:\n",
-    "        student.display_info()\n",
-    "\n",
-    "def list_courses(courses):\n",
-    "    print(\"List of courses: \")\n",
-    "    for course in courses:\n",
-    "        print(f\"Course ID: {course.id} - Name: {course.name}\")\n",
-    "        \n",
-    "def show_student_marks(student, selected_course):\n",
-    "    print(f\"Marks for {selected_course.name} - Student ID: {student.id} - Name: {student.name}\")\n",
-    "\n",
-    "    for course_mark in student.courses:\n",
-    "        if course_mark['course'].id == selected_course.id:\n",
-    "            print(f\"Course ID: {course_mark['course'].id} - Marks: {course_mark['marks']}\")\n",
-    "            return\n",
-    "\n",
-    "    print(f\"No marks found for {selected_course.name}\")\n",
-    "\n",
-    "def select_choice():\n",
-    "    while True:\n",
-    "        print(\" ---------------------------------------\")\n",
-    "        print(\"1. Enter the number and information of student(s).\")\n",
-    "        print(\"2. Enter the number and information of course(s).\")\n",
-    "        print(\"3. Enter mark for student(s).\")\n",
-    "        print(\"4. List of student(s).\")\n",
-    "        print(\"5. List of course(s).\")\n",
-    "        print(\"6. Show student(s) mark.\")\n",
-    "        print(\"7. Done.\")\n",
-    "\n",
-    "        choice = int(input(\"Enter the next step: \"))\n",
-    "\n",
-    "        if choice == 1:\n",
-    "            number_student = number_of_students()\n",
-    "            for _ in range(number_student):\n",
-    "                student_id = input(\"Enter student id: \")\n",
-    "                student_name = input(\"Enter student name: \")\n",
-    "                student_dob = input(\"Enter student dob: \")\n",
-    "                student = Student(student_id, student_name, student_dob)\n",
-    "                students.append(student)\n",
-    "\n",
-    "        elif choice == 2:\n",
-    "            number_courses = number_of_courses()\n",
-    "            for _ in range(number_courses):\n",
-    "                course_id = input(\"Enter course id: \")\n",
-    "                course_name = input(\"Enter course name: \")\n",
-    "                course = Course(course_id, course_name)\n",
-    "                courses.append(course)\n",
-    "\n",
-    "        elif choice == 3:\n",
-    "            selected_course = select_course(courses)\n",
-    "            if selected_course:\n",
-    "                for student in students:\n",
-    "                    marks = float(input(f\"Enter the mark for {selected_course.name} of the student {student.name}: \"))\n",
-    "                    student.input_marks(selected_course.id, marks)\n",
-    "\n",
-    "        elif choice == 4:\n",
-    "            list_students(students)\n",
-    "\n",
-    "        elif choice == 5:\n",
-    "            list_courses(courses)\n",
-    "\n",
-    "        elif choice == 6:\n",
-    "            if check_student_number(students) and check_course_number(courses):\n",
-    "                selected_student_id = input(\"Enter the student ID to show marks: \")\n",
-    "                selected_student = next((student for student in students if student.id == selected_student_id), None)\n",
-    "\n",
-    "                if selected_student:\n",
-    "                    selected_course = select_course(courses)\n",
-    "                    if selected_course:\n",
-    "                        show_student_marks(selected_student, selected_course)\n",
-    "                    else:\n",
-    "                        print(\"No course selected.\")\n",
-    "                else:\n",
-    "                    print(f\"No student found with ID {selected_student_id}\")\n",
-    "        elif choice == 7:\n",
-    "            return 0\n",
-    "\n",
-    "if __name__ == \"__main__\":\n",
-    "    select_choice()\n"
-   ]
-  }
- ],
- "metadata": {
-  "kernelspec": {
-   "display_name": "Python 3 (ipykernel)",
-   "language": "python",
-   "name": "python3"
-  },
-  "language_info": {
-   "codemirror_mode": {
-    "name": "ipython",
-    "version": 3
-   },
-   "file_extension": ".py",
-   "mimetype": "text/x-python",
-   "name": "python",
-   "nbconvert_exporter": "python",
-   "pygments_lexer": "ipython3",
-   "version": "3.12.1"
-  }
- },
- "nbformat": 4,
- "nbformat_minor": 5
-}
+class Student:
+    def __init__(self, student_id, name, dob):
+        self.id = student_id
+        self.name = name
+        self.dob = dob
+        self.courses = []
+
+    def input_marks(self, course_id, marks):
+        course = next((c for c in courses if c.id == course_id), None)
+        if course:
+            self.courses.append({"course": course, "marks": marks})
+        else:
+            print(f"Course with ID {course_id} not found.")
+
+    def display_info(self):
+        print(f"Student ID: {self.id} - Name: {self.name}")
+
+class Course:
+    def __init__(self, course_id, name):
+        self.id = course_id
+        self.name = name
+
+students = []
+courses = []
+
+def number_of_students():
+    return int(input("Enter the number of student(s): "))
+
+def number_of_courses():
+    return int(input("Enter the number of course(s): "))
+
+def check_student_number(students):
+    if len(students) == 0:
+        print("There is no student yet!")
+        return False
+    else:
+        return True
+
+def check_course_number(courses):
+    if len(courses) == 0:
+        print("There is no course yet!")
+        return False
+    else:
+        return True
+
+def select_course(courses):
+    print("Select a course ")
+    list_courses(courses)
+    course_id = input("Enter course ID: ")
+    
+    for course in courses:
+        if course.id == course_id:
+            return course
+        
+def list_students(students):
+    print("List of students: ")
+    for student in students:
+        student.display_info()
+
+def list_courses(courses):
+    print("List of courses: ")
+    for course in courses:
+        print(f"Course ID: {course.id} - Name: {course.name}")
+        
+def show_student_marks(student, selected_course):
+    print(f"Marks for {selected_course.name} - Student ID: {student.id} - Name: {student.name}")
+
+    for course_mark in student.courses:
+        if course_mark['course'].id == selected_course.id:
+            print(f"Course ID: {course_mark['course'].id} - Marks: {course_mark['marks']}")
+            return
+
+    print(f"No marks found for {selected_course.name}")
+
+def select_choice():
+    while True:
+        print(" ---------------------------------------")
+        print("1. Enter the number and information of student(s).")
+        print("2. Enter the number and information of course(s).")
+        print("3. Enter mark for student(s).")
+        print("4. List of student(s).")
+        print("5. List of course(s).")
+        print("6. Show student(s) mark.")
+        print("7. Done.")
+
+        choice = int(input("Enter the next step: "))
+
+        if choice == 1:
+            number_student = number_of_students()
+            for _ in range(number_student):
+                student_id = input("Enter student id: ")
+                student_name = input("Enter student name: ")
+                student_dob = input("Enter student dob: ")
+                student = Student(student_id, student_name, student_dob)
+                students.append(student)
+
+        elif choice == 2:
+            number_courses = number_of_courses()
+            for _ in range(number_courses):
+                course_id = input("Enter course id: ")
+                course_name = input("Enter course name: ")
+                course = Course(course_id, course_name)
+                courses.append(course)
+
+        elif choice == 3:
+            selected_course = select_course(courses)
+            if selected_course:
+                for student in students:
+                    marks = float(input(f"Enter the mark for {selected_course.name} of the student {student.name}: "))
+                    student.input_marks(selected_course.id, marks)
+
+        elif choice == 4:
+            list_students(students)
+
+        elif choice == 5:
+            list_courses(courses)
+
+        elif choice == 6:
+            if check_student_number(students) and check_course_number(courses):
+                selected_student_id = input("Enter the student ID to show marks: ")
+                selected_student = next((student for student in students if student.id == selected_student_id), None)
+
+                if selected_student:
+                    selected_course = select_course(courses)
+                    if selected_course:
+                        show_student_marks(selected_student, selected_course)
+                    else:
+                        print("No course selected.")
+                else:
+                    print(f"No student found with ID {selected_student_id}")
+        elif choice == 7:
+            return 0
+
+if __name__ == "__main__":
+    select_choice()
+
